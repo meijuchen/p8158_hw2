@@ -1,0 +1,63 @@
+---
+title: "p8158_hw2_mc4959"
+author: "Meiju Chen"
+date: "1/29/2021"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+library(psych)
+library(GPArotation)
+library(tidyverse)
+library(dplyr)
+knitr::opts_chunk$set(
+	echo = TRUE,
+	warning = FALSE,
+	message = FALSE,
+	fig.width = 8, 
+  fig.height = 6,
+  out.width = "90%"
+)
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+```
+
+
+```{r}
+### Read in the genetic data
+genetic <- read.csv("./data/genetictestingrawdata.csv",head=TRUE,sep=",") %>%
+  mutate_if(is_character, as.numeric)
+
+### Write descriptive stats to screen
+summary(genetic)
+
+### Adds the data so variable names can be used without pre-specificaiton of dataname
+attach(genetic)
+
+### Create an object with just the 5 variables we want to analyze
+usevars <- cbind(C2,C4,C5,C6,C15) 
+
+### Here we use polychoric correlation and do parallel analysis of eigenvalues
+geneticparallel <- fa.parallel.poly(usevars)
+str(geneticparallel)
+geneticparallel$pc.values
+geneticparallel$pc.sim$mean
+
+### Here we use Pearson correlation (note, poly is dropped from function name)
+geneticparallel.pearson <- fa.parallel(usevars)
+str(geneticparallel.pearson)
+geneticparallel.pearson$pc.values
+geneticparallel.pearson$pc.sim
+
+### Cronbach's alpha
+str(usevars)
+geneticalpha <- alpha(usevars)
+geneticalpha
+```
+
+
