@@ -48,15 +48,9 @@ str(geneticparallel)
 geneticparallel$pc.values
 geneticparallel$pc.sim$mean
 
-### Here we use Pearson correlation (note, poly is dropped from function name)
-geneticparallel.pearson <- fa.parallel(usevars)
-str(geneticparallel.pearson)
-geneticparallel.pearson$pc.values
-geneticparallel.pearson$pc.sim
 
 ### Cronbach's alpha
-str(usevars)
-geneticalpha <- alpha(usevars)
+geneticalpha <- psych::alpha(usevars)
 geneticalpha
 ```
 
